@@ -1,4 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const withYaml = require("next-plugin-yaml");
+const nextConfig = {
+  images: {
+    domains: ["i.imgur.com"],
+  },
+  // experimental: {
+  //   serverActions: true,
+  // },
+};
 
-module.exports = nextConfig
+module.exports = withYaml(nextConfig);

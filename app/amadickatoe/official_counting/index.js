@@ -38,7 +38,7 @@ const OfficialCounting = () => {
   );
 
   return (
-    <div className="flex rounded mb-16">
+    <div className="flex rounded mb-16 mt-16">
       <div className="flex flex-col justify-center item-center rounded outline outline-1 outline-white w-48 h-56 m-4 p-4">
         <p className="text-center m-auto font-bold text-7xl text-red-400">
           {days}

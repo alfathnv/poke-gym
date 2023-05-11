@@ -3,16 +3,18 @@ import React from "react";
 
 const Info = (props) => {
   const { summaries, handleReset } = props;
-
-  const summaryList = summaries.map((elem, id) => (
-    <li key={id} className="text-rose-500">
-      {elem}
-    </li>
-  ));
+  const summaryList =
+    summaries &&
+    summaries.length &&
+    summaries.map((elem, id) => (
+      <li key={id} className="text-rose-500">
+        {elem}
+      </li>
+    ));
 
   return (
-    <div className="flex flex-col justify-start item-center bg-orange-100 w-60 h-full rounded p-4">
-      <h2 className="text-xl text-orange-700 font-bold text-center mb-2">
+    <div className="flex flex-col justify-start item-center bg-red-100 w-60 h-full rounded p-4">
+      <h2 className="text-xl text-rose-500 font-bold text-center mb-2">
         Summary
       </h2>
       <ul className="flex-1">{summaryList}</ul>

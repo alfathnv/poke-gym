@@ -10,13 +10,13 @@ import { getDatabase } from "firebase/database";
 const firebaseConfig = {
   apiKey: "AIzaSyBJkorsFctP8zfy5c2OqyaHwH0Lc_cZQhY",
   authDomain: "amadickatoe.firebaseapp.com",
+  databaseURL:
+    "https://amadickatoe-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "amadickatoe",
   storageBucket: "amadickatoe.appspot.com",
   messagingSenderId: "318965896722",
   appId: "1:318965896722:web:a15d2fc1f78b277dad2acb",
   measurementId: "G-SLL7N0862K",
-  databaseURL:
-    "https://amadickatoe-default-rtdb.asia-southeast1.firebasedatabase.app/",
 };
 
 // Initialize Firebase

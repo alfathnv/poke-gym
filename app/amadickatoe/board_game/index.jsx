@@ -32,6 +32,7 @@ const BoardGame = () => {
     const isPlayRef = ref(db, "isPlay/");
     const winnerRef = ref(db, "winner/");
     const winnerRulesRef = ref(db, "winner_rules/");
+    const summariesRef = ref(db, "summaries/");
     onValue(boardRef, (snapshot) => {
       const data = snapshot.val();
       return setDataList(data);
@@ -57,6 +58,10 @@ const BoardGame = () => {
       const data = snapshot.val();
       return setWinnerRules(data);
     });
+    onValue(summariesRef, (snapshot) => {
+      const data = snapshot.val();
+      return setSummaries(data);
+    });
   }
 
   function updateFirebaseDataById(id, value) {
@@ -74,6 +79,12 @@ const BoardGame = () => {
       updates["/player/"] = game_data.player[0];
     }
 
+    const newSummaries = [
+      ...summaries,
+      `${moveCount + 1}: ${player.name} put ${player.value} in box ${id + 1}`,
+    ];
+    updates["/summaries/"] = newSummaries;
+
     update(ref(db), updates);
   }
 
@@ -85,6 +96,7 @@ const BoardGame = () => {
       winner: "",
       player: game_data.player[0],
       winner_rules: "",
+      summaries: "",
     });
   }
 
@@ -93,10 +105,11 @@ const BoardGame = () => {
   const checkWin = (player) => {
     if (moveCount < 4) return;
     if (moveCount == size * size - 1) {
-      setSummaries([...summaries, `${moveCount + 1}: GAME TIE`]);
-
+      const newSummaries = [...summaries, `${moveCount + 1}: GAME TIE`];
+      console.log(newSummaries);
       const updates = {};
       updates["/winner/"] = "tie";
+      updates["/summaries/"] = newSummaries;
       update(ref(db), updates);
     }
     let dataListID = [];
@@ -105,22 +118,6 @@ const BoardGame = () => {
         return dataListID.push(elem.id);
       }
     });
-
-    // onValue(
-    //   starCountRef,
-    //   (snapshot) => {
-    //     const data = snapshot.val();
-    //     console.log(data);
-    //     data.map((elem) => {
-    //       if (elem.value) {
-    //         dataListID.push(elem.id);
-    //       }
-    //     });
-    //   },
-    //   {
-    //     onlyOnce: true,
-    //   }
-    // );
 
     const dataListValue = dataList.map((elem) => elem.value);
     const first_rule = rules.map((rule) =>
@@ -144,11 +141,14 @@ const BoardGame = () => {
 
       if (second_rule.length) {
         // console.log(`${player} WIN !!!`);
-        setSummaries([...summaries, `${moveCount + 1}: ${player} WIN`]);
+        const newSummaries = [...summaries, `${moveCount + 1}: ${player} WIN`];
+        console.log(newSummaries);
+
         const updates = {};
         updates["/winner/"] = player;
         updates["/isPlay/"] = false;
         updates["/winner_rules/"] = second_rule;
+        updates["/summaries/"] = newSummaries;
         update(ref(db), updates);
       }
     }
@@ -162,17 +162,10 @@ const BoardGame = () => {
     changes[id].value = player.value;
 
     updateFirebaseDataById(id, player.value);
-    viewFirebaseData();
-
-    setSummaries([
-      ...summaries,
-      `${moveCount + 1}: ${player.name} put ${player.value} in box ${id + 1}`,
-    ]);
     checkWin(player.name);
   };
 
   const handleReset = () => {
-    setSummaries([]);
     const remove = dataList;
     remove.map((data) => {
       data.value = "";
